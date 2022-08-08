@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="search-container">
+        <form method="get" action="{% url 'recipes:search' %}" id="search"  class="search-form">
+            <input
+                placeholder="Buscar receitas..."
+                class="search-input"
+                type="search"
+                name="search"
+                id="search"
+                required
+                value="{{search}}"
+            />
+            <button class="search-button" type="submit">
+                <i class="fas fa-search" class="search-icon"></i>
+            </button>
+        </form>
+    </div>
+</div>
