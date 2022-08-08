@@ -2,8 +2,10 @@ from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.db.models import Q
 
+
 # Create your views here.
 from recipes.models import Recipe
+from utils.pagnation import make_pagination
 
 
 def home(request):
@@ -11,9 +13,11 @@ def home(request):
 
     # recipes = get_list_or_404(Recipe.objects.filter(
     #    is_published=True).order_by('-id'))
+    page_obj, pagination_range = make_pagination(request, recipes, 9, 4)
 
     return render(request, 'recipes/pages/home.html', context={
-        'recipes': recipes,
+        'recipes': page_obj,
+        'pagination_range': pagination_range
     })
 
 
