@@ -49,3 +49,6 @@ def make_pagination(request, queryset, per_page, qty_pages=4):
         number_pages=qty_pages,
         current_page=current_page)
     return page_obj, pagination_range
+
+
+# python -c "import string as s;from random import SystemRandom as sr;print(''.join(sr().choices(s.ascii_letters + s.punctuation, k=64)))"
