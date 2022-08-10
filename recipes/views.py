@@ -1,13 +1,15 @@
 from django.http import Http404
 from django.shortcuts import render, get_list_or_404, get_object_or_404
 from django.db.models import Q
+import os  # pegando variaveis de ambiente
 
+# from django.contrib import messages
 
 # Create your views here.
 from recipes.models import Recipe
 from utils.pagnation import make_pagination
 
-import os  # pegando variaveis de ambiente
+
 PER_PAGE = int(os.environ.get('PER_PAGE', 9))
 QTY_LINK_PAGE = int(os.environ.get('QTY_LINK_PAGE', 4))
 
@@ -19,6 +21,11 @@ def home(request):
     #    is_published=True).order_by('-id'))
     page_obj, pagination_range = make_pagination(
         request, recipes, PER_PAGE, QTY_LINK_PAGE)
+
+   # messages.error(request, 'Que legal')
+   # messages.info(request, 'Que legal')
+   # messages.success(request, 'Que legal')
+   # messages.warning(request, 'Que legal')
 
     return render(request, 'recipes/pages/home.html', context={
         'recipes': page_obj,
