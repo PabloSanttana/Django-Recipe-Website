@@ -5,10 +5,13 @@
 
 {% block content %}
     <div class="main-content center container">
+        <div style={'max-width': '640px';}>
+            {% include 'recipes/partials/messages.html' %}
+        </div>
+       
         <h2>Register</h2>
     </div>
     <div class="main-content container">
-       
         <form action="{% url 'authors:create' %}" method="POST">
             <div class="form-content form-content-grid">
                 {% csrf_token %}
@@ -20,12 +23,21 @@
                     {% if field.help_text %}
                         <p class="help-text">{{field.help_text}}</p>
                     {% endif %}
-                    {{ field.errors }}
+                        {{ field.errors }}
                     </div>
                     
                 {% endfor %}
                
             </div>
+            {% if form.errors %}
+                <div class="form-content form-content-grid">
+                    <div class="form-group">
+                        <div class="message message-error">
+                            There are errors in the form, please fix them and send again.
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
             <div class="form-content form-content-grid">
                 <div class="form-group">
                   <button type="submit">Send</button>
