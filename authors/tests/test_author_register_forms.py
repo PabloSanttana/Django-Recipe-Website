@@ -113,3 +113,11 @@ class AuthorRegisterFormIntegrationTest(djangoTestCase):
         message = 'Password and password2 must be equal'
         response = self.client.post(url, data=self.form_data, follow=True)
         self.assertNotIn(message, response.content.decode('utf-8'))
+
+    def test_password_not_value_password(self):
+        self.form_data['password'] = 'Password123'
+        url = reverse('authors:create')
+        message = 'Do not enter the Password in the password field'
+        response = self.client.post(url, data=self.form_data, follow=True)
+        self.assertIn(message, response.context['form'].errors.get('password'))
+        self.assertIn(message, response.content.decode('utf-8'))

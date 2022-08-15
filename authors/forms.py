@@ -127,10 +127,10 @@ class RegisterForm(forms.ModelForm):
     # validando campos clean_name = expecifico para aquele campo
     def clean_password(self):
         data = self.cleaned_data.get('password')
-        text = 'password'
+        text = 'Password'
         if text in data:
             raise ValidationError(
-                'Não digite %(value)s no campo password',
+                'Do not enter the %(value)s in the password field',
                 code='invalid',
                 params={'value': f'{text}'}
             )

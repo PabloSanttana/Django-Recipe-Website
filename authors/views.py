@@ -8,7 +8,6 @@ from django.contrib import messages
 
 
 def register_view(request):
-    messages.success(request, 'Your user is created, please log in.')
     register_form_data = request.session.get('register_form_data', None)
     form = RegisterForm(register_form_data)
     return render(request, 'authors/pages/register_view.html', {
