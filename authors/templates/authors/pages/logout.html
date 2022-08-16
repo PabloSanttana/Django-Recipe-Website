@@ -1,0 +1,19 @@
+{% extends 'global/base.html' %}
+{% block title %}
+Logout | User
+{%endblock %}
+
+{% block content %}
+    <div class="main-content center container">
+        <div style={'max-width': '640px';}>
+            {% include 'global/partials/messages.html' %}
+        </div>
+        <h2>Logout</h2>
+        {% if request.user.is_authenticated %}
+        <br>
+            <p>Are you sure you want to quit ?   <a href="{% url 'authors:logout_user' %}">Logout</a></p>
+          
+        {% endif %}
+    </div>
+
+{% endblock content %}

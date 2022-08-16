@@ -4,7 +4,7 @@ from authors.forms import RegisterForm, LoginForm
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 
@@ -31,6 +31,7 @@ def register_create(request):
         messages.success(request, 'Your user is create, please log in.')
 
         del(request.session['register_form_data'])
+        return redirect('authors:login')
 
     return redirect('authors:register')
 
@@ -61,4 +62,15 @@ def login_create(request):
     else:
         messages.error(request, 'Error to validate form data.')
 
+    return redirect('authors:login')
+
+
+def logout_view(request):
+
+    return render(request, 'authors/pages/logout.html')
+
+
+def logout_user(request):
+
+    logout(request)
     return redirect('authors:login')

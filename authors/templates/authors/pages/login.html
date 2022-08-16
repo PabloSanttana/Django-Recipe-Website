@@ -12,7 +12,10 @@ Login | User
         {% if request.user.is_authenticated %}
             <br>
             <div class="message message-info">
-                <p style="color:black" >Your are logged in width  <strong>{{ request.user.username}}</strong>.</p>
+                <p style="color:black" >Your are logged in width 
+                    <strong>{{ request.user.username}}</strong>. 
+                    <a href="{% url 'authors:logout' %}">Logout</a>
+                </p>
             </div>
             
             
