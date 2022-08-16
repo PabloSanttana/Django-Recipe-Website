@@ -20,7 +20,7 @@ class AuthorRegisterViewsTest(TestCase):
         self.assertTemplateUsed(response, 'authors/pages/register_view.html')
 
     def test_authors_register_create_view_returns_status_404_ok(self):
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.get(url)
         self.assertEqual(response.status_code, 404)
 
@@ -33,6 +33,6 @@ class AuthorRegisterViewsTest(TestCase):
             'password': 'Abc123456789abc123',
             'password2': 'Abc123456789abc123'
         }
-        url = reverse('authors:create')
+        url = reverse('authors:register_create')
         response = self.client.post(url, data=form_data)
         self.assertEqual(response.status_code, 302)
