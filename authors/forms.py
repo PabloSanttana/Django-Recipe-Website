@@ -53,7 +53,6 @@ class RegisterForm(forms.ModelForm):
         error_messages={'required': 'This field is required.'},
         label='E-mail',
         help_text='The e-mail must be valid'
-
     )
 
     password = forms.CharField(
@@ -136,6 +135,17 @@ class RegisterForm(forms.ModelForm):
             )
 
         return data
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email', '')
+        exits = User.objects.filter(email=email).exists()
+
+        if exits:
+            raise ValidationError(
+                'The email: %(email)s is already in use',
+                code='invalid',
+                params={'email': email})
+        return email
 
     # validação em geral metodo super().
     def clean(self):
