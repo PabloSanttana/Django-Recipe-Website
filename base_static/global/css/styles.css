@@ -68,6 +68,13 @@ h5,
 h6 {
     font-family: var(--font-headings);
 }
+button{
+    cursor: pointer;
+}
+
+.main-content-container{
+    min-height: 68vh
+}
 
 .container {
     max-width: 144rem;

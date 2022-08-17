@@ -5,6 +5,7 @@ from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -65,12 +66,19 @@ def login_create(request):
     return redirect('authors:login')
 
 
+@login_required(login_url='authors:login', redirect_field_name='next')
 def logout_view(request):
 
     return render(request, 'authors/pages/logout.html')
 
 
+@login_required(login_url='authors:login', redirect_field_name='next')
 def logout_user(request):
+    if not request.POST:
+        return redirect('authors:login')
+
+    if request.POST.get('username') != request.user.username:
+        return redirect('authors:login')
 
     logout(request)
     return redirect('authors:login')

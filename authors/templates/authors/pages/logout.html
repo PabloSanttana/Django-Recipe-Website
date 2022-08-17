@@ -10,9 +10,22 @@ Logout | User
         </div>
         <h2>Logout</h2>
         {% if request.user.is_authenticated %}
-        <br>
-            <p>Are you sure you want to quit ?   <a href="{% url 'authors:logout_user' %}">Logout</a></p>
-          
+            <br>
+
+            <div class="main-content container">
+                <form action="{% url 'authors:logout_user' %}"  method="POST">
+                    {% csrf_token %}
+                    <p>Are you sure you want to quit ? </p>
+                    <br>
+                    <br>
+                    <input type="hidden" name="username" value="{{ request.user.username }}">
+                    <div class="form-content form-content-grid">
+                        <div class="form-group">
+                            <button type="submit">Logout</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
         {% endif %}
     </div>
 
