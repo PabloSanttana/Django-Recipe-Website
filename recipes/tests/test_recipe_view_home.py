@@ -76,9 +76,7 @@ class RecipeViewsTest(RecipeTestBase):
 
     @patch('recipes.views.PER_PAGE', new=9)
     def test_recipe_home_template_shows_recipes_is_pagination(self):
-        for i in range(20):
-            kwargs = {'slug': f'r{i}', 'author_data': {'username': f'r{i}'}}
-            self.make_recipe(**kwargs)
+        self.make_recipe_in_batch()
         url = reverse('recipes:home')
         response = self.client.get(url)
         recipes = response.context['recipes']
