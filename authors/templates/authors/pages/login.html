@@ -14,7 +14,7 @@ Login | User
             <div class="message message-info">
                 <p style="color:black" >Your are logged in width 
                     <strong>{{ request.user.username}}</strong>. 
-                    <a href="{% url 'authors:logout' %}">Logout</a>
+                    <a aria-label="Logout" href="{% url 'authors:logout' %}">Logout</a>
                 </p>
             </div>
             
