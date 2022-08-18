@@ -5,8 +5,6 @@ from parameterized import parameterized
 
 
 class AuthorsRegisterFunctionTestCase(AuthorBaseFunctionTestCase):
-    def get_by_name(self, form, name):
-        return form.find_element(By.NAME, name)
 
     def fill_form_dummy_data(self, form):
         fields = form.find_elements(By.TAG_NAME, "input")
@@ -16,10 +14,6 @@ class AuthorsRegisterFunctionTestCase(AuthorBaseFunctionTestCase):
                 field.send_keys(" " * 20)
         form.find_element(By.NAME, "email").send_keys("email@example")
 
-    def get_form(self):
-        return self.browser.find_element(
-            By.XPATH, "/html/body/main/div[2]/form")
-
     def form_user_registers(self, form):
         self.get_by_name(form, "first_name").send_keys("Rafaela")
         self.get_by_name(form, "last_name").send_keys("Santana")
@@ -28,11 +22,6 @@ class AuthorsRegisterFunctionTestCase(AuthorBaseFunctionTestCase):
         self.get_by_name(form, "password").send_keys("Ab123456789")
         self.get_by_name(form, "password2").send_keys("Ab123456789")
         self.get_by_name(form, "first_name").send_keys(Keys.ENTER)
-
-    def form_user_login(self, form):
-        self.get_by_name(form, "username").send_keys("rafaelaSantana")
-        self.get_by_name(form, "password").send_keys("Ab123456789")
-        self.get_by_name(form, "password").send_keys(Keys.ENTER)
 
     @parameterized.expand([
         ('first_name', 'Write your first name'),
@@ -60,50 +49,10 @@ class AuthorsRegisterFunctionTestCase(AuthorBaseFunctionTestCase):
         self.assertIn(errorMessage, form.text)
 
     def test_form_register_sucess(self):
-        # navegar pro registro
-        self.browser.get(self.live_server_url + '/authors/register')
-        # selecionar o formulario
-        form = self.get_form()
-        # preencher o formulario completo valores validos e enviar
-        self.form_user_registers(form)
+        # faz o registro do usuario
+        self.create_user_defualt_is_valid()
         # verificar se exite a messagem de sucesso no formualrio
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'message-success')
         self.assertIn("Your user is create, please log in",
                       message_success.text)
-
-    def test_form_login(self):
-        # navegar pro registro
-        self.browser.get(self.live_server_url + '/authors/register')
-        # selecionar o formulario
-        form = self.get_form()
-        # preencher o formulario completo valores validos e enviar
-        self.form_user_registers(form)
-        # selecionar o novo formulario
-        form = self.get_form()
-        # preencher o formulario completo valores validos e enviar
-        self.form_user_login(form)
-        # verificar se exite a messagem de sucesso
-        message_success = self.browser.find_element(
-            By.CLASS_NAME, 'message-info')
-        self.assertIn("rafaelaSantana",
-                      message_success.text)
-
-    def test_form_logout(self):
-        self.browser.get(self.live_server_url + '/authors/register')
-        form = self.get_form()
-        self.form_user_registers(form)
-        form = self.get_form()
-        self.form_user_login(form)
-
-        logout = self.browser.find_element(
-            By.XPATH, '//a[@aria-label="Logout"]')
-        logout.send_keys(Keys.ENTER)
-
-        form = self.browser.find_element(
-            By.XPATH, "/html/body/main/div/div[2]/form")
-        form.find_element(By.TAG_NAME, 'button').send_keys(Keys.ENTER)
-
-        h2 = self.browser.find_element(By.TAG_NAME, 'h2')
-
-        self.assertIn("Login", h2.text)
