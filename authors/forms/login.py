@@ -4,10 +4,10 @@ from django import forms
 
 
 class LoginForm(forms.Form):
-    username = forms.CharField(required=True, widget=forms.TextInput(attrs={
+    username = forms.CharField(required=True, label="Username", widget=forms.TextInput(attrs={
         'placeholder': 'Type your username'
     }))
-    password = forms.CharField(required=True, widget=forms.PasswordInput(attrs={
+    password = forms.CharField(required=True, label="Password", widget=forms.PasswordInput(attrs={
         'placeholder': 'Your password',
         'type': 'password'
     }))

@@ -43,31 +43,47 @@ class AuthorsRegisterFunctionTestCase(AuthorBaseFunctionTestCase):
 
     ])
     def test_empty_feild_error_message(self, field, errorMessage):
+        # navegar pro registro
         self.browser.get(self.live_server_url + '/authors/register')
+        # selecionar o formulario
         form = self.get_form()
+        # preencher com " " cada campos
         self.fill_form_dummy_data(form)
+        # preencher o campo atual do parameterized
         input = self.get_by_name(form, field)
         input.send_keys(" ")
+        # precionar tecla enter para enviar o formulario
         input.send_keys(Keys.ENTER)
+        # pegar o novo formulario gerado com erros de validação
         form = self.get_form()
+        # verificando a messagem de error do campo atual
         self.assertIn(errorMessage, form.text)
 
     def test_form_register_sucess(self):
+        # navegar pro registro
         self.browser.get(self.live_server_url + '/authors/register')
+        # selecionar o formulario
         form = self.get_form()
+        # preencher o formulario completo valores validos e enviar
         self.form_user_registers(form)
+        # verificar se exite a messagem de sucesso no formualrio
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'message-success')
         self.assertIn("Your user is create, please log in",
                       message_success.text)
 
     def test_form_login(self):
+        # navegar pro registro
         self.browser.get(self.live_server_url + '/authors/register')
+        # selecionar o formulario
         form = self.get_form()
+        # preencher o formulario completo valores validos e enviar
         self.form_user_registers(form)
+        # selecionar o novo formulario
         form = self.get_form()
+        # preencher o formulario completo valores validos e enviar
         self.form_user_login(form)
-
+        # verificar se exite a messagem de sucesso
         message_success = self.browser.find_element(
             By.CLASS_NAME, 'message-info')
         self.assertIn("rafaelaSantana",

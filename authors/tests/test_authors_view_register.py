@@ -36,3 +36,18 @@ class AuthorRegisterViewsTest(TestCase):
         url = reverse('authors:register_create')
         response = self.client.post(url, data=form_data)
         self.assertEqual(response.status_code, 302)
+
+    def test_authors_login_view_function_is_correct(self):
+        url = reverse('authors:login')
+        view = resolve(url)
+        self.assertIs(view.func, views.login_view)
+
+    def test_authors_login_view_loads_correct_template(self):
+        url = reverse('authors:login')
+        response = self.client.get(url)
+        self.assertTemplateUsed(response, 'authors/pages/login.html')
+
+    def test_authors_login_create_view_returns_status_404_ok(self):
+        url = reverse('authors:login_create')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)

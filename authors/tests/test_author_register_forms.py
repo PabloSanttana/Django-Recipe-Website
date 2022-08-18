@@ -133,14 +133,16 @@ class AuthorRegisterFormIntegrationTest(djangoTestCase):
 
     def test_authors_create_can_login(self):
         url = reverse('authors:register_create')
-        response = self.client.post(url, data=self.form_data, follow=True)
-
+        # registrendo formualrio
+        self.client.post(url, data=self.form_data, follow=True)
+        # validanado as credencias do usuario
         is_authenticated = self.client.login(
             username=self.form_data.get('username'),
             password=self.form_data.get('password'),
         )
+        # verificando se o usuario pode fazer login
         self.assertTrue(is_authenticated)
-
+        # fazendo login do usuario
         is_authenticated = self.client.login(
             username=self.form_data.get('username'),
             password='Pasd123456',
