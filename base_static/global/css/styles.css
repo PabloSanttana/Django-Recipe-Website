@@ -52,6 +52,15 @@ html {
     font-size: 62.5%;
 }
 
+img{
+    max-width: 100%;
+}
+
+a {
+    color: var(--color-primary);
+    text-decoration: none;
+  }
+
 body {
     font-size: 1.6rem;
     font-family: var(--font-primary);
@@ -312,6 +321,9 @@ button{
 .center {
     text-align: center;
 }
+.text-left{
+    text-align: left;
+}
 
 .bt-50 {
     margin-bottom: calc(100vh - 384px);
@@ -358,6 +370,9 @@ button{
 }
 
 .message {
+    width: 100%;
+    max-width: 64rem;
+    margin: 0 auto;
     padding: 1rem;
     border-radius: 4px;
     border: 1px solid var(--color-dark-text);
@@ -440,7 +455,7 @@ button{
     margin: 5px 0px;
   }
 
-.form-content input {
+.form-content input, textarea, select {
     width: 100%;
     padding: 1rem;
     border-radius: 0.4rem;
@@ -458,6 +473,10 @@ button{
     border: none;
     background: var(--color-primary-dark);
     color: var(--color-white);
+}
+
+.span-2{
+    grid-column: span 2;
 }
 
 @media (max-width: 600px) {

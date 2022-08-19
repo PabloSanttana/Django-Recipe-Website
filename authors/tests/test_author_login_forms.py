@@ -68,5 +68,5 @@ class AuthorLoginFromIntegrationTest(djangoTestCase):
         )
         self.assertIn('Your are logged in width',
                       response.content.decode('utf-8'))
-        self.assertIn(f'strong>{username}</strong>. ',
+        self.assertIn(f'<strong>{username}</strong>.',
                       response.content.decode('utf-8'))

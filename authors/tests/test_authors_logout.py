@@ -17,14 +17,16 @@ class AuthorsLogoutTest(TestCase):
         return super().setUp(*args, **kwargs)
 
     def test_user_to_logout_using_get_methor(self):
+        username = 'RafaelaSantana'
         url = reverse('authors:logout_user')
         response = self.client.get(url, follow=True)
         self.assertIn('Your are logged in width',
                       response.content.decode('utf-8'))
-        self.assertIn(f'strong>RafaelaSantana</strong>. ',
+        self.assertIn(f'<strong>{username}</strong>.',
                       response.content.decode('utf-8'))
 
     def test_logout_not_allowed_user_different_of_the_requisition(self):
+        username = 'RafaelaSantana'
         url = reverse('authors:logout_user')
         form_data = {
             "username": 'username',
@@ -32,7 +34,7 @@ class AuthorsLogoutTest(TestCase):
         response = self.client.post(url, data=form_data, follow=True)
         self.assertIn('Your are logged in width',
                       response.content.decode('utf-8'))
-        self.assertIn(f'strong>RafaelaSantana</strong>. ',
+        self.assertIn(f'<strong>{username}</strong>.',
                       response.content.decode('utf-8'))
 
     def test_logout_with_success(self):
@@ -44,5 +46,5 @@ class AuthorsLogoutTest(TestCase):
         response = self.client.post(url, data=form_data, follow=True)
         self.assertNotIn('Your are logged in width',
                          response.content.decode('utf-8'))
-        self.assertNotIn(f'strong>{username}</strong>. ',
+        self.assertNotIn(f'<strong>{username}</strong>. ',
                          response.content.decode('utf-8'))
