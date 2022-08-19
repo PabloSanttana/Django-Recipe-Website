@@ -64,7 +64,7 @@ class AuthorsLoginFunctionTestCase(AuthorBaseFunctionTestCase):
         logout.send_keys(Keys.ENTER)
 
         form = self.browser.find_element(
-            By.XPATH, "/html/body/main/div/div[2]/form")
+            By.XPATH, "/html/body/main/div/div/form")
         form.find_element(By.TAG_NAME, 'button').send_keys(Keys.ENTER)
 
         h2 = self.browser.find_element(By.TAG_NAME, 'h2')

@@ -1,11 +1,14 @@
-from django.shortcuts import render, redirect
+from pickle import FALSE
+from django.shortcuts import render, redirect, get_object_or_404
 
-from authors.forms import RegisterForm, LoginForm
+from authors.forms import RegisterForm, LoginForm, RecipeForm
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+
+from recipes.models import Recipe
 
 # Create your views here.
 
@@ -57,6 +60,7 @@ def login_create(request):
         if authenticated_user is not None:
             messages.success(request, 'Your are logged in.')
             login(request, authenticated_user)
+            return redirect('authors:dashboard')
         else:
             messages.error(request, 'Invalid credentials.')
 
@@ -82,3 +86,25 @@ def logout_user(request):
 
     logout(request)
     return redirect('authors:login')
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard(request):
+    # fazer paginacao dps
+    recipes = Recipe.objects.filter(
+        author__username=request.user.username, is_published=False).order_by('-id')
+    return render(request, 'authors/pages/dashboard.html', context={
+        'recipes': recipes,
+        'title': 'Dashboard'
+    })
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_edit(request, id):
+    recipe = get_object_or_404(
+        Recipe, pk=id, is_published=False, author=request.user)
+    form = RecipeForm(request.POST or None, instance=recipe)
+    return render(request, 'authors/pages/dashboard_recipes.html', context={
+        'form': form,
+        'title': 'Dashboard Recipe'
+    })

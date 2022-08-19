@@ -62,9 +62,10 @@ class AuthorLoginFromIntegrationTest(djangoTestCase):
 
     def test_login_message_success(self):
         username = self.form_data.get('username')
-        response = self.login_user_default(username=self.form_data.get(
-            'username'), password=self.form_data.get('password'))
-        self.assertIn("Your are logged in.", response.content.decode('utf-8'))
+        response = self.login_user_default(
+            username=self.form_data.get('username'),
+            password=self.form_data.get('password')
+        )
         self.assertIn('Your are logged in width',
                       response.content.decode('utf-8'))
         self.assertIn(f'strong>{username}</strong>. ',

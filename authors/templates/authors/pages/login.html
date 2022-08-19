@@ -9,17 +9,9 @@ Login | User
             {% include 'global/partials/messages.html' %}
         </div>
         <h2>Login</h2>
-        {% if request.user.is_authenticated %}
-            <br>
-            <div class="message message-info">
-                <p style="color:black" >Your are logged in width <strong>{{ request.user.username}}</strong>. 
-                    <a aria-label="Logout" href="{% url 'authors:logout' %}">Logout</a>
-                </p>
-            </div>
-            
-            
-        {% endif %}
+        {% include 'authors/partials/message_login.html'%}
     </div>
-    {% include 'global/partials/form.html' %}
-
+    {% if not request.user.is_authenticated %}
+        {% include 'global/partials/form.html' %}
+    {% endif %}
 {% endblock content %}

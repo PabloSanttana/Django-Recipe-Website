@@ -5,9 +5,7 @@ Logout | User
 
 {% block content %}
     <div class="main-content center container">
-        <div style={'max-width': '640px';}>
-            {% include 'global/partials/messages.html' %}
-        </div>
+     
         <h2>Logout</h2>
         {% if request.user.is_authenticated %}
             <br>
