@@ -52,7 +52,10 @@ class RecipeForm(forms.ModelForm):
         }
         widgets = {
             "cover": forms.FileInput(
-                attrs={'class': 'span-2'}
+                attrs={
+                    'class': 'span-2',
+                    'accept': "image/*",
+                },
             ),
             'servings_unit': forms.Select(
                 choices=(
@@ -75,10 +78,23 @@ class RecipeForm(forms.ModelForm):
             )
         }
 
+        help_texts = {
+            'cover': 'Maximum size file ( 2MB )'
+        }
+
     def clean_category(self):
         data = self.cleaned_data.get('category')
-
         if data is None:
             raise ValidationError('This field is required', code='invalid')
 
+        return data
+
+    def clean_cover(self):
+        data = self.cleaned_data.get('cover')
+        megabyte = 1024 * 1024
+        if data.size / megabyte > 2:
+            raise ValidationError(
+                'Maximum size reached ( 2MB )',
+                code='invalid',
+            )
         return data
