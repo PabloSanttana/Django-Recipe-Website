@@ -145,7 +145,7 @@ def dashboard_recipe_edit(request, id):
 
 
 @login_required(login_url='authors:login', redirect_field_name='next')
-def dashboard_recipe_view(request):
+def dashboard_recipe_create(request):
     form = RecipeForm(
         request.POST or None,
         files=request.FILES or None,
@@ -158,10 +158,22 @@ def dashboard_recipe_view(request):
         recipe.is_published = False
         recipe.save()
         messages.success(request, 'Recipe create success')
-        del(request.session['recipe_form_data'])
         return redirect('authors:dashboard')
 
     return render(request, 'authors/pages/dashboard_recipe_create.html', context={
         'form': form,
         'title': 'Recipe Create',
     })
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def dashboard_recipe_delete(request, id):
+    if not request.POST:
+        return redirect('authors:dashboard')
+
+    recipe = get_object_or_404(
+        Recipe, pk=id, is_published=False, author=request.user)
+
+    recipe.delete()
+    messages.success(request, 'Delete with success.')
+    return redirect('authors:dashboard')

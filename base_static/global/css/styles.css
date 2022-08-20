@@ -81,6 +81,21 @@ button{
     cursor: pointer;
 }
 
+.d-flex {
+    display: flex
+}
+.items-center {
+    align-items: center;
+}
+.ml-2 {
+    margin-left: 1rem
+}
+
+.delete-button{
+    border: none;
+    background: transparent;
+}
+
 .main-content-container{
     min-height: 68vh
 }

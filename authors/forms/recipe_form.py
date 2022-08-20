@@ -1,6 +1,7 @@
 from django import forms
 from recipes.models import Recipe
 from django.core.exceptions import ValidationError
+from collections import defaultdict
 
 
 def add_attr(field, attr_name, attr_new_val):
@@ -15,6 +16,7 @@ class RecipeForm(forms.ModelForm):
                  'placeholder', 'How to prepare a  recipe')
         add_attr(self.fields['preparation_steps'],
                  'class', 'span-2')
+        self._my_errors = defaultdict(list)
 
     title = forms.CharField(
         max_length=150,
@@ -106,36 +108,41 @@ class RecipeForm(forms.ModelForm):
     def clean_category(self):
         data = self.cleaned_data.get('category')
         if data is None:
-            raise ValidationError('This field is required', code='invalid')
+            # Podemos levantar erros de dois modos
+            #raise ValidationError('This field is required', code='invalid')
+            self._my_errors['category'].append('This field is required')
 
         return data
 
     def clean_preparation_time(self):
         data = self.cleaned_data.get('preparation_time')
         if data <= 0:
-            raise ValidationError('Invalid number', code='invalid')
+            self._my_errors['preparation_time'].append('Invalid number')
 
         return data
 
     def clean_servings(self):
         data = self.cleaned_data.get('servings')
         if data <= 0:
-            raise ValidationError('Invalid number', code='invalid')
+
+            self._my_errors['servings'].append('Invalid number')
 
         return data
 
     def clean_cover(self):
         data = self.cleaned_data.get('cover')
         if data is None:
-            raise ValidationError(
-                'This field is requiredor',
-                code='invalid',
-            )
+            self._my_errors['cover'].append('This field is requiredor')
         else:
             megabyte = 1024 * 1024
             if data.size / megabyte > 2:
-                raise ValidationError(
-                    'Maximum size reached ( 2MB )',
-                    code='invalid',
-                )
+                self._my_errors['cover'].append('Maximum size reached ( 2MB )')
         return data
+
+    def clean(self, *args, **kwargs):
+        super_clean = super().clean(*args, **kwargs)
+
+        if self._my_errors:
+            raise ValidationError(self._my_errors)
+
+        return super_clean
