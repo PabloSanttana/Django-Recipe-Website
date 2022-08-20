@@ -1,7 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import User
+import string
+import random
+from django.utils.text import slugify
 
 # Create your models here.
+
+
+def rand_slug():
+    return ''.join(random.choice(string.ascii_letters + string.digits) for _ in range(6))
 
 
 class Category(models.Model):
@@ -33,6 +40,11 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.title + "-" + rand_slug())
+        super(Recipe, self).save(*args, **kwargs)
 
 
 # on_delete=models.SET_NULL quando deletar set este campo como nulo

@@ -11,13 +11,38 @@ def add_attr(field, attr_name, attr_new_val):
 class RecipeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        add_attr(self.fields['title'], 'placeholder', 'Recipe title')
-        add_attr(self.fields['description'],
-                 'placeholder', 'Recipe Description')
         add_attr(self.fields['preparation_steps'],
                  'placeholder', 'How to prepare a  recipe')
         add_attr(self.fields['preparation_steps'],
                  'class', 'span-2')
+
+    title = forms.CharField(
+        max_length=150,
+        min_length=4,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Recipe Title',
+        }),
+        error_messages={
+            'required': 'This field is required',
+            'min_length': 'Make sure the value is at least 4 characters',
+            'max_length': 'Make sure the value is a maximum of 10 characters.'
+        }
+    )
+
+    description = forms.CharField(
+        max_length=150,
+        min_length=4,
+        required=True,
+        widget=forms.TextInput(attrs={
+            'placeholder': 'Description recipe',
+        }),
+        error_messages={
+            'required': 'This field is required',
+            'min_length': 'Make sure the value is at least 4 characters',
+            'max_length': 'Make sure the value is a maximum of 10 characters.'
+        }
+    )
 
     class Meta:
         model = Recipe
@@ -25,12 +50,7 @@ class RecipeForm(forms.ModelForm):
                    'preparation_steps_is_html', 'slug']
 
         error_messages = {
-            'title': {
-                'required': 'This field is required'
-            },
-            'description': {
-                'required': 'This field is required'
-            },
+
             'preparation_time': {
                 'required': 'This field is required'
             },
@@ -55,6 +75,7 @@ class RecipeForm(forms.ModelForm):
                 attrs={
                     'class': 'span-2',
                     'accept': "image/*",
+                    'onchange': 'validateSize(this)'
                 },
             ),
             'servings_unit': forms.Select(
@@ -89,12 +110,32 @@ class RecipeForm(forms.ModelForm):
 
         return data
 
+    def clean_preparation_time(self):
+        data = self.cleaned_data.get('preparation_time')
+        if data <= 0:
+            raise ValidationError('Invalid number', code='invalid')
+
+        return data
+
+    def clean_servings(self):
+        data = self.cleaned_data.get('servings')
+        if data <= 0:
+            raise ValidationError('Invalid number', code='invalid')
+
+        return data
+
     def clean_cover(self):
         data = self.cleaned_data.get('cover')
-        megabyte = 1024 * 1024
-        if data.size / megabyte > 2:
+        if data is None:
             raise ValidationError(
-                'Maximum size reached ( 2MB )',
+                'This field is requiredor or Maximum size reached ( 2MB )',
                 code='invalid',
             )
+        else:
+            megabyte = 1024 * 1024
+            if data.size / megabyte > 2:
+                raise ValidationError(
+                    'Maximum size reached ( 2MB )',
+                    code='invalid',
+                )
         return data
