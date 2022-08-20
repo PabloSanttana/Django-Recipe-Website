@@ -1,12 +1,13 @@
 from pickle import FALSE
 from django.shortcuts import render, redirect, get_object_or_404
 
-from authors.forms import RegisterForm, LoginForm, RecipeForm
+from authors.forms import RegisterForm, LoginForm, RecipeForm, UpdadeUserForm
 from django.http import Http404
 from django.contrib import messages
 from django.urls import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 from recipes.models import Recipe
 
@@ -68,6 +69,26 @@ def login_create(request):
         messages.error(request, 'Error to validate form data.')
 
     return redirect('authors:login')
+
+
+@login_required(login_url='authors:login', redirect_field_name='next')
+def profile_view(request):
+    user = User.objects.get(username=request.user.username)
+    form = UpdadeUserForm(
+        request.POST or None,
+        instance=user
+    )
+
+    if form.is_valid():
+        form.save()
+        messages.success(request, 'Edit with success.')
+        return redirect('authors:profile')
+
+    return render(request, 'authors/pages/dashboard_profile.html', context={
+        'form': form,
+        'title': 'Profile'
+    })
+    ...
 
 
 @login_required(login_url='authors:login', redirect_field_name='next')

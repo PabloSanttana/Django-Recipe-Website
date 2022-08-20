@@ -166,3 +166,61 @@ class RegisterForm(forms.ModelForm):
                 ],
 
             }, code='invalid',)
+
+
+class UpdadeUserForm(forms.ModelForm):
+    # sobre escrevendo formulrios
+    first_name = forms.CharField(
+        error_messages={'required': 'Write your first name'},
+        required=True,
+        label='First name',
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'placeholder': "Ex.: john"
+        })
+    )
+    last_name = forms.CharField(
+        error_messages={'required': 'Write your last name'},
+        required=True,
+        label='Last name',
+        max_length=150,
+        widget=forms.TextInput(attrs={
+            'placeholder': "Ex.: Doe"
+        })
+    )
+
+    email = forms.EmailField(
+        required=True,
+        error_messages={'required': 'This field is required.'},
+        label='E-mail',
+        help_text='The e-mail must be valid',
+        widget=forms.TextInput(attrs={
+            'placeholder': "'Ex.: email@example.com'"
+        })
+    )
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'first_name',
+            'last_name',
+            'email',
+
+        ]
+        labels = {
+            'username': 'Username',
+            'email': 'E-mail',
+        }
+
+    def clean_email(self):
+        current_email = self.instance.email
+        new_email = self.cleaned_data.get('email', '')
+        if current_email != new_email:
+            exits = User.objects.filter(email=new_email).exists()
+            if exits:
+                raise ValidationError(
+                    'The email: %(email)s is already in use',
+                    code='invalid',
+                    params={'email': new_email})
+        return new_email
