@@ -128,7 +128,7 @@ class RecipeForm(forms.ModelForm):
         data = self.cleaned_data.get('cover')
         if data is None:
             raise ValidationError(
-                'This field is requiredor or Maximum size reached ( 2MB )',
+                'This field is requiredor',
                 code='invalid',
             )
         else:
