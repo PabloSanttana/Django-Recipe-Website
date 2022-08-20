@@ -19,8 +19,9 @@
                 {% for recipe in recipes %}
                     <li class="d-flex items-center">
                         <a href="{% url 'authors:dashboard_recipe_edit' recipe.id %}">{{recipe.title}}  </a>
-                        <form id="form-delete" class="form-delete ml-2 " action="{% url 'authors:dashboard_recipe_delete' recipe.id %}" method="post">
+                        <form id="form-delete" class="form-delete ml-2 " action="{% url 'authors:dashboard_recipe_delete' %}" method="post">
                             {% csrf_token %}
+                            <input required type="hidden" name="id" value="{{ recipe.id}}">
                             <button class="delete-button" type="submit"> ❌ </button>
                         </form>
                     </li>
