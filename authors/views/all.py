@@ -1,4 +1,3 @@
-from pickle import FALSE
 from django.shortcuts import render, redirect, get_object_or_404
 
 from authors.forms import RegisterForm, LoginForm, RecipeForm, UpdadeUserForm
@@ -120,7 +119,8 @@ def dashboard(request):
     })
 
 
-@login_required(login_url='authors:login', redirect_field_name='next')
+# foi mudada para class baseada em view
+""" @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard_recipe_edit(request, id):
     recipe = get_object_or_404(
         Recipe, pk=id, is_published=False, author=request.user)
@@ -142,9 +142,10 @@ def dashboard_recipe_edit(request, id):
         'form': form,
         'title': 'Dashboard Recipe'
     })
+ """
 
-
-@login_required(login_url='authors:login', redirect_field_name='next')
+# foi mudada para class baseada em view
+""" @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard_recipe_create(request):
     form = RecipeForm(
         request.POST or None,
@@ -160,12 +161,14 @@ def dashboard_recipe_create(request):
         messages.success(request, 'Recipe create success')
         return redirect('authors:dashboard')
 
-    return render(request, 'authors/pages/dashboard_recipe_create.html', context={
+    return render(request, 'authors/pages/dashboard_recipes.html', context={
         'form': form,
         'title': 'Recipe Create',
     })
+ """
 
-
+# foi mudada para class baseada em view
+""" 
 @login_required(login_url='authors:login', redirect_field_name='next')
 def dashboard_recipe_delete(request):
     if not request.POST:
@@ -177,4 +180,4 @@ def dashboard_recipe_delete(request):
 
     recipe.delete()
     messages.success(request, 'Delete with success.')
-    return redirect('authors:dashboard')
+    return redirect('authors:dashboard') """

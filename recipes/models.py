@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 import string
 import random
 from django.utils.text import slugify
+from django.urls import reverse
 
 # Create your models here.
 
@@ -40,6 +41,9 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('recipes:recipe', args=(self.slug,))
 
     def save(self, *args, **kwargs):
         if not self.slug:
