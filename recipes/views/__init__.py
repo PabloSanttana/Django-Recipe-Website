@@ -1,2 +1,2 @@
 from .all import *
-from .RecipeListViewBase import *
+from .RecipesViewBase import *
