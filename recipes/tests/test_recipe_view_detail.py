@@ -10,7 +10,10 @@ class RecipeViewDetailTest(RecipeTestBase):
     def test_recipe_detail_view_function_is_correct(self):
         url = reverse('recipes:recipe', kwargs={'slug': 'Receita-35'})
         view = resolve(url)
-        self.assertIs(view.func, views.recipe)
+        # Baseado em def
+        # self.assertIs(view.func., views.function)
+        # Baseado em class
+        self.assertIs(view.func.view_class, views.RecipeDetailView)
 
     def test_recipe_detail_view_404_if_no_recieps_found(self):
         url = reverse('recipes:recipe', kwargs={'slug': 'Receita-35'})
